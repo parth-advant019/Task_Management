@@ -1,0 +1,27 @@
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import LoginPage from "./components/auth/LoginPage";
+import Welcome from "./components/dashboard/Welcome";
+import RootLayout from "./components/layout/RootLayout";
+
+function App() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isDark = useSelector((state) => state.theme.isDark);
+  return (
+    <div className={isDark ? "dark" : ""}>
+      <div className="min-h-screen bg-white dark:bg-gray-900 dark:text-white">
+        <Routes>
+          <Route element={<RootLayout />}>
+            <Route path="/" element={<LoginPage />} />
+            <Route
+              path="/welcome"
+              element={isAuthenticated ? <Welcome /> : <Navigate to="/" />}
+            />
+          </Route>
+        </Routes>
+      </div>
+    </div>
+  );
+}
+
+export default App;
