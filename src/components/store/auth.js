@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialAuthState = {
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem("userEmail") ? true : false,
 };
 
 const authSlice = createSlice({

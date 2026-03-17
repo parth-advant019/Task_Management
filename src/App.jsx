@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoginPage from "./components/auth/LoginPage";
-import Welcome from "./components/dashboard/Welcome";
 import RootLayout from "./components/layout/RootLayout";
+import DashboardPage from "./components/dashboard/DashboardPage";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -14,8 +14,10 @@ function App() {
           <Route element={<RootLayout />}>
             <Route path="/" element={<LoginPage />} />
             <Route
-              path="/welcome"
-              element={isAuthenticated ? <Welcome /> : <Navigate to="/" />}
+              path="/dashboard"
+              element={
+                isAuthenticated ? <DashboardPage /> : <Navigate to="/" />
+              }
             />
           </Route>
         </Routes>
