@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import ProjectModal from "./ProjectModal";
 
 export default function Welcome() {
-  //const userEmail = localStorage.getItem("userEmail");
   const isDark = useSelector((state) => state.theme.isDark);
+  const [view, setView] = useState("BoardView");
+  const [showModal, setShowModal] = useState(false);
 
   const [columns, setColumns] = useState({
     todo: {
@@ -23,31 +25,7 @@ export default function Welcome() {
       items: [{ id: "5", content: "completed task" }],
     },
   });
-
-  //const [newTask, setNewTask] = useState("");
-  //const [activeColumns, setActiveColumn] = useState("todo");
   const [draggedItem, setDraggedItem] = useState(null);
-
-  //   const addNewTask = () => {
-  //     if (newTask.trim() === "") return;
-
-  //     const updatedColumns = { ...columns };
-  //     updatedColumns[activeColumns].items.push({
-  //       id: Date.now().toString(),
-  //       content: newTask,
-  //     });
-
-  //     setColumns(updatedColumns);
-  //     setNewTask("");
-  //   };
-
-  const removeTask = (columnId, taskId) => {
-    const updatedColumns = { ...columns };
-    updatedColumns[columnId].items = updatedColumns[columnId].items.filter(
-      (item) => item.id !== taskId,
-    );
-    setColumns(updatedColumns);
-  };
 
   const handleDragStart = (columnId, item) => {
     setDraggedItem({ columnId, item });
@@ -89,26 +67,40 @@ export default function Welcome() {
   return (
     <>
       <div className={isDark ? "dark" : ""}>
-        <div className="flex justify-between items-center gap-3 px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm text-sm">
+        <div className="flex flex-col sm:flex-row justify-between items-center sm:items-center gap-3 px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm text-sm">
           <input
             type="text"
             placeholder="Search tasks..."
-            className="px-3 py-2 w-30 sm:w-80 md:w-120 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400"
+            className="px-3 py-2 w-full sm:flex-1 md:w-80 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400"
           />
 
-          <select className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm cursor-pointer">
-            <option value="BoardView">Board View</option>
-            <option value="ListView">List View</option>
-          </select>
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer"
+            >
+              Add Project
+            </button>
+
+            <select
+              value={view}
+              onChange={(e) => setView(e.target.value)}
+              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm cursor-pointer"
+            >
+              <option value="BoardView">Board View</option>
+              <option value="ListView">List View</option>
+            </select>
+          </div>
         </div>
 
-        <div className="p-6 w-full min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
-          <div className="flex flex-col items-center w-full max-w-6xl">
-            <div className="flex gap-6 overflow-x-auto pb-6 w-full justify-center items-start">
+        <div className="p-6 w-full min-h-screen bg-white dark:bg-gray-900">
+          {/*for board */}
+          {view === "BoardView" && (
+            <div className="flex flex-col md:flex-row gap-6">
               {Object.keys(columns).map((columnId) => (
                 <div
                   key={columnId}
-                  className={`flex-shrink-0 w-90 bg-white border-2 rounded-lg border-t-4 dark:bg-gray-900 ${columnStyles[columnId].border}`}
+                  className={`flex-shrink:0 w-full md:w-80 bg-white border-2 rounded-lg border-t-4 dark:bg-gray-900 ${columnStyles[columnId].border}`}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, columnId)}
                 >
@@ -132,12 +124,6 @@ export default function Welcome() {
                           onDragStart={() => handleDragStart(columnId, item)}
                         >
                           <span>{item.content}</span>
-                          <button
-                            onClick={() => removeTask(columnId, item.id)}
-                            className="text-zinc-400 hover:text-red-400"
-                          >
-                            ✕
-                          </button>
                         </div>
                       ))
                     )}
@@ -145,9 +131,49 @@ export default function Welcome() {
                 </div>
               ))}
             </div>
-          </div>
+          )}
+          {/*list view */}
+
+          {view === "ListView" && (
+            <div className="flex flex-col gap-6">
+              {Object.keys(columns).map((columnId) => (
+                <div
+                  key={columnId}
+                  className={`w-full bg-white border-2 rounded-lg border-t-4 dark:bg-gray-900 ${columnStyles[columnId].border}`}
+                  onDragOver={handleDragOver}
+                  onDrop={(e) => handleDrop(e, columnId)}
+                >
+                  <div
+                    className={`p-4 text-white font-bold text-xl rounded-t-md ${columnStyles[columnId].header}`}
+                  >
+                    {columns[columnId].name}
+                  </div>
+
+                  <div className="p-3 min-h-64">
+                    {columns[columnId].items.length === 0 ? (
+                      <div className="text-center py-10 text-zinc-500 italic text-sm">
+                        Drop Task Here
+                      </div>
+                    ) : (
+                      columns[columnId].items.map((item) => (
+                        <div
+                          key={item.id}
+                          className="p-4 mb-3 bg-gray-200 text-black dark:bg-gray-100 rounded-lg border border-gray-300 cursor-move flex items-center justify-between active:opacity-100 opacity-100"
+                          draggable
+                          onDragStart={() => handleDragStart(columnId, item)}
+                        >
+                          <span>{item.content}</span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
+      {showModal && <ProjectModal onClose={() => setShowModal(false)} />}
     </>
   );
 }

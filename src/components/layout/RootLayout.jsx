@@ -4,11 +4,8 @@ import NavBar from "../ui/NavBar";
 export default function RootLayout() {
   return (
     <div className="flex">
-      {/* Sidebar */}
       <NavBar />
-
-      {/* Main Content */}
-      <div className="ml-20 md:ml-64 w-full p-8">
+      <div className="w-full p-8 ml-0 md:ml-64">
         <Outlet />
       </div>
     </div>
