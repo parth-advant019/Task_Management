@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { authAction } from "../store/auth";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import validator from "validator";
+import { loginUser } from "../store/auth";
 
 export default function LoginPage() {
   const dispatch = useDispatch();
@@ -23,14 +22,7 @@ export default function LoginPage() {
 
   const loginHandler = (event) => {
     event.preventDefault();
-    if (!validator.isEmail(email)) {
-      setEmailError("Enter a valid email first!");
-      return;
-    }
-
-    localStorage.setItem("userEmail", email);
-    dispatch(authAction.login());
-    navigate("/dashboard");
+    dispatch(loginUser(email, navigate, setEmailError));
   };
 
   return (
@@ -50,13 +42,13 @@ export default function LoginPage() {
             className="flex flex-col gap-2 w-full max-w-md"
           >
             <div>
-              <label className="block text-sm/6 font-medium text-gray-500">
+              <label className="block text-sm/6 font-medium text-gray-500 dark:text-gray-300">
                 Email
               </label>
               <div className="mt-2">
                 <input
                   type="email"
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-black border border-gray-400"
+                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-black border border-gray-400 dark:text-gray-300"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value);
