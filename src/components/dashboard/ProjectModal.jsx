@@ -36,7 +36,7 @@ export default function ProjectModal({ onClose }) {
               onClick={onClose}
               className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl"
             >
-              ✕
+              X
             </button>
 
             <div className="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg ">

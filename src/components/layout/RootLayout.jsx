@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import NavBar from "../ui/NavBar";
+import SideBar from "../ui/SideBar";
 
 export default function RootLayout() {
   return (
     <div className="flex">
-      <NavBar />
-      <div className="w-full p-8 ml-0 md:ml-64">
+      <SideBar />
+      <div className="w-full p-8 ml-0 md:ml-64 pt-16 md:pt-8">
         <Outlet />
       </div>
     </div>

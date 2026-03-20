@@ -6,7 +6,7 @@ import { themeAction } from "../store/theme";
 import { useState } from "react";
 import { FaSignOutAlt, FaTachometerAlt, FaTasks } from "react-icons/fa";
 
-export default function NavBar() {
+export default function SideBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);

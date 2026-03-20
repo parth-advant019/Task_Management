@@ -61,7 +61,7 @@ export default function EditTaskModal({ onClose, selectedTask }) {
               onClick={onClose}
               className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl"
             >
-              ✕
+              X
             </button>
 
             <form
