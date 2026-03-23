@@ -23,6 +23,12 @@ export default function AddTask() {
   const submitTask = (e) => {
     e.preventDefault();
 
+    if (!form.title.trim()) return;
+    if (!form.description.trim()) return;
+    if (!form.dueDate) return;
+    if (!form.priority) return;
+    if (!form.projectId) return;
+
     const newTask = {
       id: Date.now().toString(),
       title: form.title,

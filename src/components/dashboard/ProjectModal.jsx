@@ -7,15 +7,18 @@ export default function ProjectModal({ onClose }) {
   const isDark = useSelector((state) => state.theme.isDark);
   const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
+  //const [isLoading, setIsLoading] = useState(false);
 
-  const submitProject = (e) => {
+  const submitProject = async (e) => {
     e.preventDefault();
 
     if (!projectName.trim()) return;
-
+    //setIsLoading(true);
+    //await new Promise((res) => setTimeout(res, 2000));
     dispatch(projectAction.addProject(projectName));
     console.log("project add", projectName);
     setProjectName("");
+    //setIsLoading(false);
     onClose();
   };
 
@@ -75,6 +78,7 @@ export default function ProjectModal({ onClose }) {
                     className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                   >
                     Add Project
+                    {/* {isLoading ? "Adding.." : "Add Project"} */}
                   </button>
                 </div>
               </form>

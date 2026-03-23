@@ -77,6 +77,14 @@ const projectSlice = createSlice({
 
       localStorage.setItem("project", JSON.stringify(state.projects));
     },
+    deleteProject(state, action) {
+      const projectId = action.payload;
+
+      state.projects = state.projects.filter(
+        (project) => project.id !== projectId,
+      );
+      localStorage.setItem("project", JSON.stringify(state.projects));
+    },
   },
 });
 
