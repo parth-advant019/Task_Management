@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { projectAction } from "../store/project";
 
@@ -9,22 +9,11 @@ export default function EditTaskModal({ onClose, selectedTask }) {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
-    title: "",
-    description: "",
-    priority: "low",
-    dueDate: "",
+    title: selectedTask?.task.title || "",
+    description: selectedTask?.task.description || "",
+    priority: selectedTask?.task.priority || "low",
+    dueDate: selectedTask?.task.dueDate || "",
   });
-
-  useEffect(() => {
-    if (selectedTask) {
-      setForm({
-        title: selectedTask.task.title || "",
-        description: selectedTask.task.description || "",
-        priority: selectedTask.task.priority || "low",
-        dueDate: selectedTask.task.dueDate || "",
-      });
-    }
-  }, [selectedTask]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

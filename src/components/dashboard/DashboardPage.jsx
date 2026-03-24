@@ -74,74 +74,76 @@ export default function Welcome() {
   return (
     <>
       <div className={isDark ? "dark" : ""}>
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-3 px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm text-sm">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm text-sm">
           <input
             type="text"
             placeholder="Search tasks..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="px-3 py-2 w-full sm:flex-1 md:w-80 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400"
+            className="h-10 px-3 w-full lg:w-80 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white placeholder-gray-400"
           />
 
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer"
-            >
-              Add Project
-            </button>
+          <div className="flex flex-col gap-3 w-full lg:flex-row lg:items-center lg:w-auto">
+            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+              <button
+                onClick={() => setShowModal(true)}
+                className="h-11 px-3  rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer flex items-center justify-center"
+              >
+                Add Project
+              </button>
 
-            <input
-              type="date"
-              placeholder="From Date"
-              value={fromData}
-              onChange={(e) => setFromData(e.target.value)}
-              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm cursor-pointer"
-            />
+              <input
+                type="date"
+                value={fromData}
+                onChange={(e) => setFromData(e.target.value)}
+                className="h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+              />
 
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm cursor-pointer"
-            />
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+              />
+            </div>
 
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm cursor-pointer"
-            >
-              <option value="all">All Project</option>
-              {projects.map((proj) => (
-                <option key={proj.id} value={proj.id}>
-                  {proj.title}
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+              >
+                <option value="all">All Project</option>
+                {projects.map((proj) => (
+                  <option key={proj.id} value={proj.id}>
+                    {proj.title}
+                  </option>
+                ))}
+              </select>
 
-            <select
-              value={priorityFilter}
-              onChange={(e) => setPriorityFilter(e.target.value)}
-              className="px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm cursor-pointer"
-            >
-              <option value="all">All Priority</option>
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
+              <select
+                value={priorityFilter}
+                onChange={(e) => setPriorityFilter(e.target.value)}
+                className="h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+              >
+                <option value="all">All Priority</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
 
-            <select
-              value={view}
-              onChange={(e) => setView(e.target.value)}
-              className="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white text-sm cursor-pointer"
-            >
-              <option value="BoardView">Board View</option>
-              <option value="ListView">List View</option>
-            </select>
+              <select
+                value={view}
+                onChange={(e) => setView(e.target.value)}
+                className="h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+              >
+                <option value="BoardView">Board View</option>
+                <option value="ListView">List View</option>
+              </select>
+            </div>
           </div>
         </div>
-
-        <div className="p-6 w-full min-h-screen bg-white dark:bg-gray-900">
+        <div className="p-4 md:p-6 w-full max-w-300 mx-auto min-h-screen bg-white dark:bg-gray-900">
           <div className="flex flex-col gap-8">
             {projects
               .filter((project) => {
@@ -173,12 +175,12 @@ export default function Welcome() {
                   </h2>
 
                   <div
-                    className={`${view === "BoardView" ? "flex flex-col md:flex-row gap-6" : "flex flex-col gap-6"}`}
+                    className={`${view === "BoardView" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" : "flex flex-col gap-6"}`}
                   >
                     {Object.keys(columnStyles).map((columnId) => (
                       <div
                         key={columnId}
-                        className={`${view === "BoardView" ? "flex-shrink:0 w-full md:w-90 bg-white border-2 rounded-lg border-t-4 dark:bg-gray-900" : "w-full bg-white border-2 rounded-lg border-t-4 dark:bg-gray-900"} ${columnStyles[columnId].border}`}
+                        className={`${view === "BoardView" ? "w-full bg-white border-2 rounded-lg border-t-4 dark:bg-gray-900" : "w-full bg-white border-2 rounded-lg border-t-4 dark:bg-gray-900"} ${columnStyles[columnId].border}`}
                         onDragOver={handleDragOver}
                         onDrop={(e) => handleDrop(e, project.id, columnId)}
                       >
