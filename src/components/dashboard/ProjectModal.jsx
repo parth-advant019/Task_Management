@@ -7,12 +7,18 @@ export default function ProjectModal({ onClose }) {
   const isDark = useSelector((state) => state.theme.isDark);
   const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
+  const [error, setError] = useState("");
   //const [isLoading, setIsLoading] = useState(false);
 
   const submitProject = async (e) => {
     e.preventDefault();
 
-    if (!projectName.trim()) return;
+    if (!projectName.trim()) {
+      setError("Project name is required");
+      return;
+    }
+
+    setError(""); // clear error if valid
     //setIsLoading(true);
     //await new Promise((res) => setTimeout(res, 2000));
     dispatch(projectAction.addProject(projectName));
@@ -49,40 +55,42 @@ export default function ProjectModal({ onClose }) {
               </svg>
             </button>
 
-            <div className="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg ">
-              <div className="mb-2 text-gray-500 dark:text-gray-300 flex justify-center">
-                <h2>Enter Your Project</h2>
-              </div>
-
-              <form
-                className="flex flex-col gap-2 w-full max-w-md"
-                onSubmit={submitProject}
-              >
-                <div>
-                  <label className="block text-sm/6 font-medium text-gray-500 dark:text-gray-300">
-                    Project Name
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      value={projectName}
-                      onChange={(e) => setProjectName(e.target.value)}
-                      className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-black border border-gray-400 dark:text-gray-300"
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    type="submit"
-                    className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                  >
-                    Add Project
-                    {/* {isLoading ? "Adding.." : "Add Project"} */}
-                  </button>
-                </div>
-              </form>
+            <div className="mb-2 text-gray-500 dark:text-gray-300 flex justify-center">
+              <h2>Enter Your Project</h2>
             </div>
+
+            <form
+              className="flex flex-col gap-2 w-full max-w-md"
+              onSubmit={submitProject}
+            >
+              <div>
+                <label className="block text-sm/6 font-medium text-gray-500 dark:text-gray-300">
+                  Project Name
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    value={projectName}
+                    onChange={(e) => {
+                      setProjectName(e.target.value);
+                      if (error) setError("");
+                    }}
+                    className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-black border border-gray-400 dark:text-gray-300"
+                  />
+                </div>
+              </div>
+              {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+
+              <div className="mt-4">
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  Add Project
+                  {/* {isLoading ? "Adding.." : "Add Project"} */}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

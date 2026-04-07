@@ -10,6 +10,7 @@ export default function SideBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const projects = useSelector((state) => state.project.projects);
   const isDark = useSelector((state) => state.theme.isDark);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -68,16 +69,18 @@ export default function SideBar() {
                 </Link>
               </li>
 
-              <li>
-                <Link
-                  to="/add-task"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 p-4 hover:bg-indigo-500 rounded cursor-pointer"
-                >
-                  <FaTasks size={20} className="shrink-0" />
-                  <span>Add Task</span>
-                </Link>
-              </li>
+              {projects.length > 0 && (
+                <li>
+                  <Link
+                    to="/add-task"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 p-4 hover:bg-indigo-500 rounded cursor-pointer"
+                  >
+                    <FaTasks size={20} className="shrink-0" />
+                    <span>Add Task</span>
+                  </Link>
+                </li>
+              )}
 
               <li
                 onClick={logoutHandler}

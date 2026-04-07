@@ -4,6 +4,7 @@ import LoginPage from "./components/auth/LoginPage";
 import RootLayout from "./components/layout/RootLayout";
 import DashboardPage from "./components/dashboard/DashboardPage";
 import AddTask from "./components/addTask/AddTask";
+import ProtectedPage from "./components/ui/ProtectedPage";
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -19,13 +20,11 @@ function App() {
             />
             <Route
               path="/dashboard"
-              element={
-                isAuthenticated ? <DashboardPage /> : <Navigate to="/" />
-              }
+              element={isAuthenticated ? <DashboardPage /> : <ProtectedPage />}
             />
             <Route
               path="/add-task"
-              element={isAuthenticated ? <AddTask /> : <Navigate to="/" />}
+              element={isAuthenticated ? <AddTask /> : <ProtectedPage />}
             />
           </Route>
         </Routes>

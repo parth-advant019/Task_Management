@@ -12,6 +12,7 @@ export default function Welcome() {
   const [view, setView] = useState("BoardView");
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
+  const [dateError, setDateError] = useState("");
 
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
@@ -92,19 +93,55 @@ export default function Welcome() {
                 Add Project
               </button>
 
-              <input
-                type="date"
-                value={fromData}
-                onChange={(e) => setFromData(e.target.value)}
-                className="h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
-              />
+              <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <span className="text-xs text-gray-400 whitespace-nowrap">
+                    From
+                  </span>
+                  <input
+                    type="date"
+                    value={fromData}
+                    min={fromData || undefined}
+                    max={toDate || undefined}
+                    onChange={(e) => {
+                      const value = e.target.value;
 
-              <input
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
-              />
+                      if (toDate && value > toDate) {
+                        setDateError(
+                          "From date cannot be greater than To date",
+                        );
+                        return;
+                      }
+
+                      setDateError("");
+                      setFromData(value);
+                    }}
+                    className="h-10 w-full sm:w-auto px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <span className="text-xs text-gray-400 whitespace-nowrap">
+                    To
+                  </span>
+                  <input
+                    type="date"
+                    value={toDate}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      if (fromData && value < fromData) {
+                        setDateError("To date cannot be less than From date");
+                        return;
+                      }
+
+                      setDateError("");
+                      setToDate(value);
+                    }}
+                    className="h-10 w-full sm:w-auto px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white"
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
@@ -143,6 +180,10 @@ export default function Welcome() {
             </div>
           </div>
         </div>
+        {dateError && (
+          <p className="text-red-500 text-xs mt-1 px-1">{dateError}</p>
+        )}
+
         <div className="p-4 md:p-6 w-full max-w-300 mx-auto min-h-screen bg-white dark:bg-gray-900">
           <div className="flex flex-col gap-8">
             {projects

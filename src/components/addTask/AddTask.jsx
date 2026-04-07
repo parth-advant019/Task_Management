@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function AddTask() {
   const isDark = useSelector((state) => state.theme.isDark);
   const projects = useSelector((state) => state.project.projects);
+  const [error, setError] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,11 +24,27 @@ export default function AddTask() {
   const submitTask = (e) => {
     e.preventDefault();
 
-    if (!form.title.trim()) return;
-    if (!form.description.trim()) return;
-    if (!form.dueDate) return;
-    if (!form.priority) return;
-    if (!form.projectId) return;
+    if (!form.title.trim()) {
+      setError("Title is required");
+      return;
+    }
+
+    if (!form.description.trim()) {
+      setError("Description is required");
+      return;
+    }
+
+    if (!form.dueDate) {
+      setError("Due date is required");
+      return;
+    }
+
+    if (!form.projectId) {
+      setError("Please select a project");
+      return;
+    }
+
+    setError(""); // clear error
 
     const newTask = {
       id: Date.now().toString(),
@@ -139,6 +156,10 @@ export default function AddTask() {
                 </select>
               </div>
             </div>
+
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
 
             <div className="mt-4">
               <button
